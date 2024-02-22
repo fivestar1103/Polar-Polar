@@ -6,7 +6,6 @@ public class ParallaxEffect : MonoBehaviour
     public float parallaxFactor;
 
     private Vector3 previousCameraPosition;
-    private float startingPosX;
 
     void Start()
     {
@@ -15,7 +14,6 @@ public class ParallaxEffect : MonoBehaviour
             cameraTransform = Camera.main.transform;
         }
 
-        startingPosX = transform.position.x;
         previousCameraPosition = cameraTransform.position;
     }
 
@@ -26,7 +24,8 @@ public class ParallaxEffect : MonoBehaviour
             float deltaX = cameraTransform.position.x - previousCameraPosition.x;
 
             float parallaxMovement = deltaX * parallaxFactor;
-            Vector3 newPosition = new Vector3(startingPosX + parallaxMovement, transform.position.y, transform.position.z);
+            Vector3 currentPosition = transform.position;
+            Vector3 newPosition = new Vector3(currentPosition.x + parallaxMovement, transform.position.y, transform.position.z);
 
             transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime);
 

@@ -163,9 +163,11 @@ MonoBehaviour:
   jumpForce: 5.5
   maxWalkableAngle: 15
   magneticForce: 9
+  isNorthPoleActive: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
   slideColliderSize: {x: 2.55, y: 1.6}
   originalColliderSize: {x: 1.86, y: 2.4}
   hitEffectPrefab: {fileID: 1202522996400206, guid: 600ac93985d9a43fc8eb4ad938e37d03, type: 3}
+  magneticEffectPrefab: {fileID: 1500378020736912, guid: 256daae7e5677451da7eb2f08ef3fd8f, type: 3}

@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PenguinController : MonoBehaviour
 {
@@ -7,13 +9,14 @@ public class PenguinController : MonoBehaviour
     public float jumpForce = 10f;
     public float maxWalkableAngle = 0f; 
     public float magneticForce = 10f;
-    private bool isNorthPoleActive = true;
+    public bool isNorthPoleActive = true;
     private bool isOnMatchingPole;
     
     public LayerMask groundLayer;
     public Vector2 slideColliderSize = new Vector2(2.55f, 1.86f);
     public Vector2 originalColliderSize;
     public GameObject hitEffectPrefab;
+    public GameObject magneticEffectPrefab;
 
     private Rigidbody2D rb;
     private CapsuleCollider2D coll;
@@ -25,6 +28,8 @@ public class PenguinController : MonoBehaviour
     private const string WALK_PARAM = "IsWalking";
     private const string JUMP_PARAM = "IsJumping";
     private const string SLIDE_PARAM = "IsSliding";
+
+    public static event Action<bool> OnMagneticPowerUsed;
 
     void Start()
     {
@@ -71,17 +76,18 @@ public class PenguinController : MonoBehaviour
             animator.SetBool(JUMP_PARAM, false);
         }
         
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Minus))
         {
             isNorthPoleActive = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Equals))
         {
             isNorthPoleActive = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Equals) || Input.GetKeyDown(KeyCode.Minus))
         {
+            OnMagneticPowerUsed?.Invoke(isNorthPoleActive);
             string attackAnimation = isNorthPoleActive ? "penguin_attack_N" : "penguin_attack_S";
             animator.Play(attackAnimation);
 
@@ -154,12 +160,12 @@ public class PenguinController : MonoBehaviour
     {
         if (other.CompareTag("sharp"))
         {
-            GameManager.instance.RespawnPenguin();
             Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+            GameManager.instance.PenguinDied();
         }
         else if (other.CompareTag("water"))
         {
-            GameManager.instance.RespawnPenguin();
+            GameManager.instance.PenguinDied();
         }
         else if (other.CompareTag("candy"))
         {
@@ -171,7 +177,17 @@ public class PenguinController : MonoBehaviour
             GameManager.instance.ClearLevel();
         }
     }
-    
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("sharp"))
+        {
+            Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(collision.gameObject);
+            GameManager.instance.PenguinDied();
+        }
+    }
+
     void OnTriggerStay2D(Collider2D other)
     {
         isOnMatchingPole = (other.CompareTag("NorthPole") && isNorthPoleActive) || 
@@ -188,6 +204,8 @@ public class PenguinController : MonoBehaviour
 
     private void ApplyMagneticRepulsion()
     {
+        Vector3 magneticEffectPosition = new Vector3(transform.position.x, transform.position.y - 1.25f, transform.position.z);
+        Instantiate(magneticEffectPrefab, magneticEffectPosition, Quaternion.identity);
         rb.AddForce(Vector2.up * magneticForce, ForceMode2D.Impulse);
         isOnMatchingPole = false;
     }
