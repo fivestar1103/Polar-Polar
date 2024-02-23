@@ -44,14 +44,16 @@
     <Compile Include="Assets/Scripts/HitEffectPlayer.cs" />
     <Compile Include="Assets/Scripts/Icicle.cs" />
     <Compile Include="Assets/Scripts/CandyManager.cs" />
+    <Compile Include="Assets/Scripts/ProgressIndicator.cs" />
     <Compile Include="Assets/Scripts/LivesManager.cs" />
     <Compile Include="Assets/Scripts/CandyRotation.cs" />
     <Compile Include="Assets/Scripts/IcicleManager.cs" />
     <Compile Include="Assets/Scripts/ParallaxEffect.cs" />
+    <Compile Include="Assets/Scripts/ScoreManager.cs" />
     <Compile Include="Assets/Scripts/CameraController.cs" />
     <Compile Include="Assets/Scripts/GameManager.cs" />
-    <Compile Include="Assets/Scripts/PenguinController.cs" />
     <Compile Include="Assets/Scripts/GameOverManager.cs" />
+    <Compile Include="Assets/Scripts/PenguinController.cs" />
     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader" />

@@ -3,19 +3,17 @@ using System.Collections.Generic;
 
 public class CandyManager : MonoBehaviour
 {
-    public GameObject candyPrefab; // Assign your Candy prefab in the Inspector
-    public List<Vector3> candyPositions; // Set this list in the Inspector
-    private List<GameObject> spawnedCandies = new List<GameObject>(); // Keep track of spawned candies
+    public GameObject candyPrefab;
+    public List<Vector3> candyPositions;
+    private List<GameObject> spawnedCandies = new List<GameObject>();
 
     void Start()
     {
         SpawnCandies();
     }
 
-    // This method spawns candies at all specified positions
     public void SpawnCandies()
     {
-        // First, clear existing candies
         foreach (GameObject candy in spawnedCandies)
         {
             if (candy)
@@ -25,7 +23,6 @@ public class CandyManager : MonoBehaviour
         }
         spawnedCandies.Clear();
 
-        // Loop through each position and instantiate a candy prefab
         foreach (Vector3 position in candyPositions)
         {
             GameObject spawnedCandy = Instantiate(candyPrefab, position, Quaternion.identity, transform);

@@ -8,15 +8,15 @@ public class Icicle : MonoBehaviour
     public LayerMask groundLayer;
     public Sprite northPoleSprite;
     public Sprite southPoleSprite;
-    public float homingIntensity = 0.1f; // Adjust this to control how strongly the icicle homes in on the player
+    public float homingIntensity = 0.1f;
     public GameObject magneticEffectPrefab;
 
     
     private bool isFalling = false;
-    private bool isHoming = true; // New flag to control homing
+    private bool isHoming = true;
     private GameObject _player;
     private Rigidbody2D rb;
-    private bool isPoleNorth; // True for North, false for negative
+    private bool isPoleNorth;
     private SpriteRenderer spriteRenderer;
     
     private GameObject player
@@ -42,18 +42,16 @@ public class Icicle : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        rb.isKinematic = true; // Prevents the icicle from falling due to gravity until triggered
+        rb.isKinematic = true;
 
-        // Randomly assign pole and corresponding sprite
         isPoleNorth = Random.value > 0.5f;
         spriteRenderer.sprite = isPoleNorth ? northPoleSprite : southPoleSprite;
     }
 
     void Update()
     {
-        if (!player) return; // Check if player is still null
+        if (!player) return;
 
-        // Only calculate horizontal distance to trigger fall
         float horizontalDistance = Mathf.Abs(transform.position.x - player.transform.position.x);
         if (!isFalling && horizontalDistance <= triggerDistance)
         {
@@ -75,15 +73,12 @@ public class Icicle : MonoBehaviour
     
     void AdjustTrajectoryTowardsPlayer()
     {
-        // Calculate direction towards player
         Vector2 directionToPlayer = (player.transform.position - transform.position).normalized;
-        // Apply a horizontal force towards the player
         rb.velocity = new Vector2(directionToPlayer.x * homingIntensity, rb.velocity.y);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // Destroy icicle when it hits the ground
         if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
             Destroy(gameObject);
@@ -97,7 +92,6 @@ public class Icicle : MonoBehaviour
             PenguinController penguinController = player.GetComponent<PenguinController>();
             if (penguinController != null)
             {
-                // Check if the penguin is using magnetic powers
                 if (Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.Equals))
                 {
                     ApplyMagneticForce(penguinController.isNorthPoleActive);
@@ -113,7 +107,6 @@ public class Icicle : MonoBehaviour
         Vector2 directionToPlayer = player.transform.position - transform.position;
         float horizontalDistance = Mathf.Abs(directionToPlayer.x);
 
-        // Check if within a certain range to apply magnetic force
         if (horizontalDistance <= triggerDistance)
         {
             Instantiate(magneticEffectPrefab, transform.position, Quaternion.identity);
@@ -121,15 +114,13 @@ public class Icicle : MonoBehaviour
             float magneticForceMultiplied = player.GetComponent<PenguinController>().magneticForce * multiplyCoefficient;
             if (isPoleNorth == isNorthPole)
             {
-                // Repel
                 rb.AddForce(-directionToPlayer.normalized * magneticForceMultiplied, ForceMode2D.Impulse);
             }
             else
             {
-                // Attract
                 rb.AddForce(directionToPlayer.normalized * magneticForceMultiplied, ForceMode2D.Impulse);
             }
-            isHoming = false; // Stop homing after being repelled
+            isHoming = false;
         }
     }
 }

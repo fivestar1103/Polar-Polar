@@ -17,7 +17,6 @@ public class HitEffectPlayer : MonoBehaviour
             lightEffect.Play();
         }
 
-        // Destroy the effect GameObject after a delay
-        Destroy(gameObject, 1.5f); // Adjust time as needed
+        Destroy(gameObject, 1.5f);
     }
 }

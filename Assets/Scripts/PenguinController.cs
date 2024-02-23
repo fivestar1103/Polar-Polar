@@ -7,7 +7,6 @@ public class PenguinController : MonoBehaviour
     public float speed = 5f;
     public float slideSpeed = 8f;
     public float jumpForce = 10f;
-    public float maxWalkableAngle = 0f; 
     public float magneticForce = 10f;
     public bool isNorthPoleActive = true;
     private bool isOnMatchingPole;
@@ -44,12 +43,12 @@ public class PenguinController : MonoBehaviour
         isGrounded = Physics2D.IsTouchingLayers(coll, groundLayer);
         float move = Input.GetAxis("Horizontal");
 
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Q)) && isGrounded)
+        if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.S)) && isGrounded)
         {
             StartSlide();
         }
 
-        if ((Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.Q)) && isSliding)
+        if ((Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.S)) && isSliding)
         {
             StopSlide();
         }
@@ -125,24 +124,6 @@ public class PenguinController : MonoBehaviour
         {
             animator.Play("penguin_attack_S");
         }
-    }
-
-    private bool CanWalkOnSlope()
-    { 
-        // float colliderBottomHeight = coll.bounds.extents.y;
-        // Vector2 rayOrigin = new Vector2(transform.position.x, transform.position.y-colliderBottomHeight-0.5f);
-        // Debug.DrawRay(rayOrigin, Vector2.down*5f, Color.red);
-        // RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.down, 1f);
-        // if (hit)
-        // {
-        //     Vector2 normal = hit.normal;
-        //     float slopeAngle = Vector2.Angle(normal, Vector2.up);
-        //     // Debug.Log(slopeAngle + ", " + hit.collider.name);
-        //
-        //     if (slopeAngle <= maxWalkableAngle) return true;
-        // }
-        // return false;
-        return true;
     }
 
     private void Flip(float move)

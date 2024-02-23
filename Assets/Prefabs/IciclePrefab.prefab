@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3152963180709300597}
   - component: {fileID: 3152963180709300596}
   m_Layer: 0
-  m_Name: icicle
+  m_Name: IciclePrefab
   m_TagString: sharp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
